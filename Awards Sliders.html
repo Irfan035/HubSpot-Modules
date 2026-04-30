@@ -1,0 +1,163 @@
+<section class="awards{% if module.style.dark_mode %} dark{% endif %}">
+  <div class="content-wrapper">
+    <div class="awards__heading">{{ module.rich_text }}</div>
+    <div class="awards__wrapper">
+      <div class="awards__slider" id="awards-slider-{{ module.unique_instance_id }}">
+        {% for item in module.slides %}
+          <{% if item.url.href %}a{% else %}div{% endif %} class="awards__item"{% if item.url.href %} href="{{ item.url.href }}" target="_blank"{% endif %}>
+            <span class="awards__image bg-white">
+              <img src="{{ item.logo.src }}" alt="{{ item.logo.alt }}" loading="lazy">
+            </span>
+            <div class="awards__caption">
+              {{ item.caption }}
+            </div>
+          </{% if item.url.href %}a{% else %}div{% endif %}>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% require_js %}
+  {% if module.style.include_slider_script %}
+    <script src="{{ get_asset_url('/CRx_2021/js/flickity.js') }}"></script>
+  {% endif %}
+  <script>
+    (function() {
+      var sliderId = 'awards-slider-{{ module.unique_instance_id }}';
+      var sliderEl = document.getElementById(sliderId);
+      if (!sliderEl) return;
+
+      var flkty = new Flickity(sliderEl, {
+        autoPlay: {{ module.disable_autoplay ? 'false' : 'true' }},
+        pageDots: true,
+        contain: true,
+        cellAlign: 'left',
+        arrowShape: 'M50,75L25,50l25-25 M75,50H25',
+        groupCells: 3
+      });
+    })();
+  </script>
+{% end_require_js %}
+
+
+
+<style>
+    .awards__heading {
+  text-align: center;
+  padding: 0 0 50px;
+}
+.awards__slider {
+  padding: 0 80px;
+}
+.awards__slider .flickity-button {
+  width: 50px;
+  height: 50px;
+  background-color: var(--purple-medium);
+  transition: .2s;
+  top: 120px;
+}
+.awards__slider .flickity-button svg path {
+  fill: none;
+  stroke-width: 5px;
+  stroke: #fff;
+  transition: .2s;
+}
+.awards__slider .flickity-button:hover {
+  background-color: #fff;
+}
+.awards__slider .flickity-button:hover svg path {
+  stroke: var(--purple-medium);
+}
+.awards__slider .flickity-page-dots {
+  left: 0;
+  right: 0;
+  position: relative;
+  bottom: 0;
+  margin-top: 1em;
+}
+.awards__slider .flickity-page-dots .dot {
+  background: var(--purple-medium);
+}
+.awards__item {
+  width: 33.33%;
+  position: relative;
+  padding: 20px 20px 0;
+}
+.awards.dark,
+.awards.dark h1, 
+.awards.dark h2, 
+.awards.dark h3, 
+.awards.dark h4, 
+.awards.dark h5, 
+.awards.dark h6,
+.awards.dark a {
+  color: var(--white);
+}
+.awards.dark .awards__item:hover:not(.btn):hover, 
+.awards.dark .awards__item:hover:not(.btn):active,
+.awards.dark .awards__item:hover:not(.btn):focus{
+  color: var(--white);
+}
+.awards__image {
+  height: 220px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s linear;
+}
+.awards__image::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.awards__item:focus-within .awards__image,
+.awards__item:focus .awards__image {
+  border: 5px solid #19f;
+  mix-blend-mode: difference;
+}
+.awards__image img {
+  filter: grayscale(1);
+  transition: all .2s linear;
+}
+.awards__item:focus-within .awards__image,
+.awards__item:hover .awards__image {
+  transform: scale(105%);
+}
+.awards__item:focus-within .awards__image img,
+.awards__item:hover .awards__image img {
+  filter: grayscale(0);
+}
+.awards__caption {
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  padding: 20px;
+  /*
+  min-height: calc(5em + 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  */
+}
+
+@media (max-width:920px) {
+  .awards__item {
+    width: 50%;
+  }
+}
+
+@media (max-width:620px) {
+  .awards__item {
+    width: 100%;
+  }
+}
+
+</style>
